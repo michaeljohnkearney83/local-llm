@@ -329,3 +329,7 @@ Example for `test-ollama.ps1` (run from the `gpu-test` folder):
 | 4 | Train a tiny LLM from scratch with nanoGPT on the CPU | ✅ | How training works from zero, and why real models need huge scale |
 | 5 | Fine-tune a small model on your own data and run it in Ollama (`bard-cpu`) | ✅ | Adapting an existing model cheaply with LoRA (see [the Bard lesson](#how-fine-tuning-works-the-bard-lesson)). Also done on Kaggle's GPU with a bigger model (`bard`): see [the two Bards compared](#the-two-bards-compared). |
 | 6 | (Optional) Linux basics: Ubuntu in WSL2 (`wsl --install -d Ubuntu`) | — | The environment most AI tools and servers use |
+
+## What's in the GitHub repo
+
+The repo holds only this project's own files. `.gitignore` leaves out the Python venvs, the upstream clones `nanoGPT/` (`git clone --depth 1 https://github.com/karpathy/nanoGPT.git`) and `llama.cpp/` (see the fine-tuning section above), and all model weights and checkpoints (`*.gguf`, `*.safetensors`, `*.pt`). Recreate those locally after cloning.

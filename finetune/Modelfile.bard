@@ -1,0 +1,16 @@
+# Modelfile for "bard": the Qwen3-1.7B model you fine-tuned on Colab (bard_finetune.ipynb).
+# 1. Put the downloaded bard.gguf in this finetune folder.
+# 2. From the project folder run:  ollama create bard -f finetune\Modelfile.bard
+# 3. Chat:                          ollama run bard
+#
+# Ollama reads Qwen3's chat template from the GGUF file itself, so no TEMPLATE line is needed.
+# Note: no SYSTEM prompt asking for Shakespeare. The style comes purely from the fine-tuning,
+# which is what this exercise demonstrates. "/no_think" only turns off Qwen3's reasoning step.
+
+FROM ./bard.gguf
+
+PARAMETER temperature 0.7
+PARAMETER top_p 0.9
+PARAMETER num_ctx 2048
+
+SYSTEM """/no_think"""

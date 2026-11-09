@@ -1,0 +1,20 @@
+# Claude Code files
+CLAUDE.md
+.claude/
+
+# Python virtual environments
+.venv/
+.venv-*/
+__pycache__/
+
+# Upstream clones (see README for how to recreate them)
+nanoGPT/
+llama.cpp/
+
+# Model weights and other large binaries
+*.gguf
+*.safetensors
+*.pt
+*.bin
+finetune/models/
+finetune/bard-cpu-merged/

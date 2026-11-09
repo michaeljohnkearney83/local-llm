@@ -1,0 +1,13 @@
+# Modelfile for "bard-cpu": Qwen3-0.6B fine-tuned on this laptop's CPU (bard_cpu.py),
+# converted to bard-cpu.gguf with llama.cpp's convert_hf_to_gguf.py (see README).
+# (Ollama on Windows can't import the safetensors folder directly: that path needs MLX, which is Mac-only.)
+# From the project folder:  ollama create bard-cpu -f finetune\Modelfile.bard-cpu
+# Like Modelfile.bard, there's no Shakespeare instruction: the style comes only from fine-tuning.
+
+FROM ./bard-cpu.gguf
+
+PARAMETER temperature 0.7
+PARAMETER top_p 0.9
+PARAMETER num_ctx 2048
+
+SYSTEM """/no_think"""

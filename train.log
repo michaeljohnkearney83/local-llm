@@ -1,0 +1,114 @@
+﻿Overriding config with ..\train_shakespeare_cpu.py:
+# nanoGPT config: a tiny character-level Shakespeare model sized for this laptop's CPU.
+# Based on nanoGPT's config/train_shakespeare_char.py, shrunk using the CPU settings from nanoGPT's README.
+# Run from the nanoGPT folder:  ..\.venv\Scripts\python.exe train.py ..\train_shakespeare_cpu.py
+
+out_dir = 'out-shakespeare-cpu'   # where the trained model (checkpoint) is saved
+dataset = 'shakespeare_char'      # data/shakespeare_char: ~1 MB of Shakespeare, one token per character
+
+# --- Hardware ---
+device = 'cpu'        # the GPU's memory is faulty, so train on the CPU
+compile = False       # torch.compile isn't supported on Windows
+
+# --- The model: a "baby GPT" ---
+n_layer = 4           # transformer blocks stacked on top of each other (GPT-2 small has 12)
+n_head = 4            # attention heads per block: each one learns to look for different patterns
+n_embd = 128          # size of the vector that represents each character inside the model
+block_size = 64       # context window: how many previous characters it can see (GPT-2: 1,024 tokens)
+dropout = 0.0         # no dropout: the model is tiny, so it doesn't need it
+# This gives about 0.8 million parameters (GPT-2 small: 124 million, qwen3:8b: 8 billion).
+
+# --- Training ---
+batch_size = 12       # chunks of text processed per step
+max_iters = 2000      # training steps
+lr_decay_iters = 2000 # slowly lower the learning rate over the whole run
+learning_rate = 1e-3
+min_lr = 1e-4
+beta2 = 0.99
+warmup_iters = 100
+gradient_accumulation_steps = 1
+
+# --- Reporting ---
+eval_interval = 250   # every 250 steps, measure loss on training and validation text
+eval_iters = 20       # batches used for each measurement (small, to keep it quick)
+log_interval = 50     # print progress every 50 steps
+always_save_checkpoint = False  # only save when validation loss improves
+wandb_log = False
+
+tokens per iteration will be: 768
+found vocab_size = 65 (inside data\shakespeare_char\meta.pkl)
+Initializing a new model from scratch
+number of parameters: 0.80M
+python.exe : C:\Users\xMJKx\source\repos\scratch\local-llm\nanoGPT\train.py:196: FutureWarning: 
+`torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+At line:1 char:324
++ ... on nanoGPT; & ..\.venv\Scripts\python.exe -u train.py ..\train_shakes ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users\xMJKx\...s...)` instead.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  scaler = torch.cuda.amp.GradScaler(enabled=(dtype == 'float16'))
+C:\Users\xMJKx\source\repos\scratch\local-llm\.venv\Lib\site-packages\torch\cuda\amp\grad_scaler.py:31: UserWarning: 
+torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  super().__init__(
+num decayed parameter tensors: 18, with 802,944 parameters
+num non-decayed parameter tensors: 9, with 1,152 parameters
+using fused AdamW: False
+step 0: train loss 4.1676, val loss 4.1649
+iter 0: loss 4.1828, time 662.52ms, mfu -100.00%
+iter 50: loss 2.9336, time 52.36ms, mfu 0.02%
+iter 100: loss 2.6635, time 41.12ms, mfu 0.02%
+iter 150: loss 2.5425, time 36.47ms, mfu 0.03%
+iter 200: loss 2.5039, time 43.67ms, mfu 0.03%
+step 250: train loss 2.4293, val loss 2.4447
+saving checkpoint to out-shakespeare-cpu
+iter 250: loss 2.4904, time 567.37ms, mfu 0.02%
+iter 300: loss 2.3350, time 44.13ms, mfu 0.02%
+iter 350: loss 2.3375, time 51.74ms, mfu 0.02%
+iter 400: loss 2.3405, time 34.08ms, mfu 0.03%
+iter 450: loss 2.3362, time 42.26ms, mfu 0.03%
+step 500: train loss 2.2732, val loss 2.3141
+saving checkpoint to out-shakespeare-cpu
+iter 500: loss 2.3827, time 582.04ms, mfu 0.02%
+iter 550: loss 2.2085, time 54.80ms, mfu 0.02%
+iter 600: loss 2.1762, time 51.88ms, mfu 0.02%
+iter 650: loss 2.1471, time 39.24ms, mfu 0.02%
+iter 700: loss 2.0947, time 48.64ms, mfu 0.02%
+step 750: train loss 2.1338, val loss 2.1905
+saving checkpoint to out-shakespeare-cpu
+iter 750: loss 2.0768, time 608.68ms, mfu 0.02%
+iter 800: loss 2.2092, time 45.63ms, mfu 0.02%
+iter 850: loss 2.0917, time 53.10ms, mfu 0.02%
+iter 900: loss 2.0011, time 54.14ms, mfu 0.02%
+iter 950: loss 2.0163, time 44.57ms, mfu 0.02%
+step 1000: train loss 1.9714, val loss 2.0528
+saving checkpoint to out-shakespeare-cpu
+iter 1000: loss 2.0455, time 588.31ms, mfu 0.02%
+iter 1050: loss 1.9098, time 47.09ms, mfu 0.02%
+iter 1100: loss 1.7907, time 50.45ms, mfu 0.02%
+iter 1150: loss 1.9558, time 46.81ms, mfu 0.02%
+iter 1200: loss 1.9533, time 47.20ms, mfu 0.02%
+step 1250: train loss 1.8756, val loss 2.0089
+saving checkpoint to out-shakespeare-cpu
+iter 1250: loss 1.8472, time 568.99ms, mfu 0.02%
+iter 1300: loss 1.9599, time 49.32ms, mfu 0.02%
+iter 1350: loss 1.8367, time 44.20ms, mfu 0.02%
+iter 1400: loss 1.8251, time 45.25ms, mfu 0.02%
+iter 1450: loss 1.8467, time 49.43ms, mfu 0.02%
+step 1500: train loss 1.8557, val loss 1.9225
+saving checkpoint to out-shakespeare-cpu
+iter 1500: loss 1.8624, time 584.40ms, mfu 0.02%
+iter 1550: loss 1.8736, time 44.97ms, mfu 0.02%
+iter 1600: loss 1.7808, time 57.13ms, mfu 0.02%
+iter 1650: loss 1.8783, time 51.53ms, mfu 0.02%
+iter 1700: loss 1.7163, time 50.07ms, mfu 0.02%
+step 1750: train loss 1.7790, val loss 1.8921
+saving checkpoint to out-shakespeare-cpu
+iter 1750: loss 1.8041, time 582.51ms, mfu 0.02%
+iter 1800: loss 1.8415, time 122.34ms, mfu 0.02%
+iter 1850: loss 1.7283, time 51.51ms, mfu 0.02%
+iter 1900: loss 1.6849, time 52.85ms, mfu 0.02%
+iter 1950: loss 1.7474, time 57.65ms, mfu 0.02%
+step 2000: train loss 1.7648, val loss 1.8857
+saving checkpoint to out-shakespeare-cpu
+iter 2000: loss 1.6958, time 647.30ms, mfu 0.02%
